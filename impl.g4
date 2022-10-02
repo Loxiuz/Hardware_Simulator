@@ -2,14 +2,17 @@ grammar impl;
 
 start   : command* EOF;
 
-command : IDENTIFIER '=' expr ';'       # Assignment
-	| 'while' '(' condition ')' block   # While
-	| '.inputs' IDENTIFIER              # Input
-    | '.outputs' IDENTIFIER*            # Output
-    | '.latch'                          # Latch
-    | '.update'                         # Update
-    | '.simulate'                       # Simulate
+command : IDENTIFIER '=' (expr | condition) # Assignment
+	| 'while' '(' condition ')' block       # While
+	| '.hardware' IDENTIFIER                # Hardware
+	| '.inputs' IDENTIFIER                  # Input
+    | '.outputs' IDENTIFIER*                # Output
+    | '.latch' IDENTIFIER '->' IDENTIFIER   # Latch
+    | '.update'                             # Update
+    | '.simulate'                           # Simulate
 	;
+
+//signal : ('0'|'1');
 	
 block : '{' command* '}'
       | command
@@ -17,6 +20,7 @@ block : '{' command* '}'
 
 condition : expr ('>'|'<'|'=='|'!='|'&&') expr
           | '!' expr
+          | condition '&&' condition
           ;
 
 expr : expr ('*'|'/') expr
