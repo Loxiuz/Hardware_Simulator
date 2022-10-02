@@ -13,13 +13,18 @@ command : IDENTIFIER '=' (expr | condition) # Assignment
 	;
 
 //signal : ('0'|'1');
-	
+
+//update :  ;
+
+//simulate :  ;
+
+
 block : '{' command* '}'
       | command
       ;
 
-condition : expr ('>'|'<'|'=='|'!='|'&&') expr
-          | '!' expr
+condition : '!' expr
+          | expr ('>'|'<'|'=='|'!='|'&&') expr
           | condition '&&' condition
           ;
 
