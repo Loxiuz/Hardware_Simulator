@@ -1,10 +1,6 @@
 public abstract class AST {}
 
-abstract class Command extends AST{
-
-}
-
-class Identifier extends Command {
+class Identifier {
 
     public String identifier;
 
@@ -13,7 +9,7 @@ class Identifier extends Command {
     }
     public String eval(){return identifier;}
 }
-class Const extends Command{
+class Const{
 
     public Integer c;
 
@@ -22,6 +18,13 @@ class Const extends Command{
     }
     public Integer eval(){return c;}
 }
+/************************************************/
+abstract class Command extends AST{
+    abstract public boolean eval();
+}
+
+
+
 /************************************************/
 abstract class Condition {
     abstract public boolean eval();
