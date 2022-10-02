@@ -2,15 +2,22 @@ grammar impl;
 
 start   : command* EOF;
 
-command : IDENTIFIER '=' expr ';'
-	| 'while' '(' condition ')' block 
+command : IDENTIFIER '=' expr ';'       # Assignment
+	| 'while' '(' condition ')' block   # While
+	| '.inputs' IDENTIFIER              # Input
+    | '.outputs' IDENTIFIER*            # Output
+    | '.latch'                          # Latch
+    | '.update'                         # Update
+    | '.simulate'                       # Simulate
 	;
 	
 block : '{' command* '}'
       | command
       ;
 
-condition : expr ('>'|'<'|'=='|'!=') expr ;
+condition : expr ('>'|'<'|'=='|'!='|'&&') expr
+          | '!' expr
+          ;
 
 expr : expr ('*'|'/') expr
      | expr ('+'|'-') expr
