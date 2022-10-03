@@ -2,23 +2,27 @@ grammar impl;
 
 start   : command* EOF;
 
-command : IDENTIFIER '=' (condition | CONST)   # Assignment
-	//| 'while' '(' condition ')' block        # While
-	| '.hardware' IDENTIFIER                   # Hardware
-	| '.inputs' IDENTIFIER                     # Input
-    | '.outputs' IDENTIFIER*                   # Output
-    | '.latch' IDENTIFIER '->' IDENTIFIER      # Latch
-    | '.update'                                # Update
-    | '.simulate'                              # Simulate
+command : IDENTIFIER '=' (expr | condition) # Assignment
+	//| 'while' '(' condition ')' block       # While
+	| '.hardware' IDENTIFIER                # Hardware
+	| '.inputs' IDENTIFIER                  # Input
+    | '.outputs' IDENTIFIER*                # Output
+    | '.latch' IDENTIFIER '->' IDENTIFIER   # Latch
+    | '.update'                             # Update
+    | '.simulate'                           # Simulate
 	;
 
-/*block : '{' command* '}'
-      | command
-      ; */
-
-condition : condition '&&' condition
-          | '!' IDENTIFIER
+condition : '!' expr
+          | condition '&&' condition
+      //  | expr ('>'|'<'|'=='|'!='|'&&') expr
           ;
+
+expr : CONST
+     | IDENTIFIER
+     | '(' expr ')'
+    // | expr ('*'|'/') expr
+    // | expr ('+'|'-') expr
+     ;
 
 //signal : ('0'|'1');
 
@@ -26,16 +30,14 @@ condition : condition '&&' condition
 
 //simulate :  ;
 
-/*expr : expr ('*'|'/') expr
-     | expr ('+'|'-') expr
-     | '(' expr ')'
-     | CONST
-     | IDENTIFIER
-     ; */
+
+/* block : '{' command* '}'
+      | command
+      ; */
 
 IDENTIFIER : [a-zA-Z_] [a-zA-Z0-9_]*;
 
-CONST : [0-1]+;
+CONST : [0-9]+ ('.' [0-9]+)? ;
 
 HVIDRUM : [ \t\n]+ -> skip ;
 KOMMENTAR : '//' ~[\n]* -> skip ;
