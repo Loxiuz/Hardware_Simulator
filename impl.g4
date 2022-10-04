@@ -1,28 +1,35 @@
 grammar impl;
 
-start   : command* EOF;
+start   : hardware inputs outputs latchDec update updateDec  simulate simlnp  EOF;
 
-command : IDENTIFIER '=' (expr | condition) # Assignment
-	//| 'while' '(' condition ')' block       # While
-	| '.hardware' IDENTIFIER                # Hardware
-	| '.inputs' IDENTIFIER                  # Input
-    | '.outputs' IDENTIFIER*                # Output
-    | '.latch' IDENTIFIER '->' IDENTIFIER   # Latch
-    | '.update'                             # Update
-    | '.simulate'                           # Simulate
-	;
 
-condition : '!' expr
-          | condition '&&' condition
-      //  | expr ('>'|'<'|'=='|'!='|'&&') expr
-          ;
 
-expr : CONST
+hardware: '.hardware' IDENTIFIER ;
+inputs : '.inputs' IDENTIFIER  ;
+outputs: '.outputs' IDENTIFIER* ;
+latchDec : ('.latch' IDENTIFIER '->' IDENTIFIER)*;
+update:  '.update' ;
+updateDec: (IDENTIFIER '=' expr)*  ;
+simulate:'.simulate';
+simlnp: IDENTIFIER '=' CONST;
+
+expr : '(' expr ')'
+     | CONST
      | IDENTIFIER
-     | '(' expr ')'
-    // | expr ('*'|'/') expr
-    // | expr ('+'|'-') expr
+     | '!' expr
+     | expr ('&&' | '||') expr
+  // | IDENTIFIER expr
+  // | condition '&&' condition
+  // | expr ('*'|'/') expr
+  // | expr ('+'|'-') expr
      ;
+
+
+/*condition : '!' expr
+          | condition '&&' condition
+          | expr '&&' expr
+          ; */
+
 
 //signal : ('0'|'1');
 
