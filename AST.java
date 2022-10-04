@@ -27,38 +27,54 @@ abstract class Command extends AST{
     abstract public boolean eval();
 }
     class Hardware extends Command{
-    
 
+        Command c;
+
+        public Hardware(Command c){
+            this.c = c;
+        }
         @Override
-        public boolean eval() {return false;}
+        public boolean eval() {return c != null;} //???
     }
     class Inputs extends Command{
 
+        Command c;
 
+        public Inputs(Command c){
+            this.c = c;
+        }
         @Override
-        public boolean eval() {return false;}
+        public boolean eval() {return c != null;} //???
     }
     class Outputs extends Command{
 
+        public Outputs(){
 
+        }
         @Override
         public boolean eval() {return false;}
     }
     class Latch extends Command{
 
+        public Latch(){
 
+        }
         @Override
         public boolean eval() {return false;}
     }
     class Update extends Command{
 
+        public Update(){
 
+        }
         @Override
         public boolean eval() {return false;}
     }
     class Simulate extends Command{
 
+        public Simulate(){
 
+        }
         @Override
         public boolean eval() {return false;}
     }
