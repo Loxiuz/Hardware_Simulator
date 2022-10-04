@@ -1,25 +1,30 @@
 grammar impl;
 
-start   : command* EOF;
+start   : hardware inputs outputs latchDec update updateDec  simulate simlnp  EOF;
 
-command : IDENTIFIER '=' (expr | condition) # Assignment
-	//| 'while' '(' condition ')' block       # While
-	| '.hardware' IDENTIFIER                # Hardware
-	| '.inputs' IDENTIFIER                  # Input
-    | '.outputs' IDENTIFIER*                # Output
-    | '.latch' IDENTIFIER '->' IDENTIFIER   # Latch
-    | '.update'                             # Update
-    | '.simulate'                           # Simulate
-	;
+
+
+hardware: '.hardware' IDENTIFIER ;
+inputs : '.inputs' IDENTIFIER  ;
+outputs: '.outputs' IDENTIFIER ;
+latchDec : '.latch' IDENTIFIER '->' IDENTIFIER;
+update:  '.update' ;
+updateDec: IDENTIFIER '=' expr  ;
+simulate:'.simulate';
+simlnp: IDENTIFIER '=' CONST;
 
 condition : '!' expr
-          | condition '&&' condition
-      //  | expr ('>'|'<'|'=='|'!='|'&&') expr
-          ;
+            |condition '&&' condition
 
-expr : CONST
-     | IDENTIFIER
-     | '(' expr ')'
+          ;
+expr : '(' expr ')'
+     |  IDENTIFIER expr
+     | '!' expr
+   //  |expr '&&' expr
+   |condition '&&' condition
+
+     | CONST
+
     // | expr ('*'|'/') expr
     // | expr ('+'|'-') expr
      ;
